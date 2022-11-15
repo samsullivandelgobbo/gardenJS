@@ -1,12 +1,7 @@
-import fs from "fs"
-import path from "path"
+import { parseTitle } from "$lib/mdParser";
 
-export function GET() {
-  const fileData = fs.readFileSync(path.join(process.cwd(), "test.md"), "utf-8")
-  const fileTree = fs.readdirSync(path.join(process.cwd(), "content"))
+export async function GET() {
 
-  let data = [fileTree, fileData]
-  let res = new Response(fileTree)
-  console.log(res.body)
-  return res
+  let fileTree = await parseTitle()
+  return new Response(JSON.stringify(fileTree));
 }

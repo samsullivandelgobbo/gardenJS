@@ -1,5 +1,20 @@
 <script>
-export let title
+  import { onMount } from "svelte";
+  import Header from "$lib/Header.svelte";
+
+  let titles;
+  onMount(async () => {
+    fetch("/")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        titles = data;
+      });
+  });
+
+  let title = "My Digital Garden";
 </script>
 
 <div class="drawer drawer-mobile">
@@ -23,7 +38,7 @@ export let title
           >
         </label>
       </div>
-      <div class="flex-1"></div>
+      <div class="flex-1" />
       <div class="flex-1 px-2 mx-2 lg:hidden justify-end">{title}</div>
       <div class="flex-none hidden lg:block">
         <ul class="menu menu-horizontal">
@@ -34,7 +49,7 @@ export let title
       </div>
     </div>
     <!-- Page content here -->
-    <slot name="main"/>
+    <slot />
   </div>
   <div class="drawer-side">
     <label for="my-drawer-3" class="drawer-overlay" />
@@ -46,9 +61,13 @@ export let title
         </div>
       </li>
       <div class="p-4">
-        <slot name="sidebar"/>
-        <!-- Sidebar content here -->
-
+        {#if titles}
+          {#each titles as title}
+            <ul>
+              <li><a href="/{title}">{title}</a></li>
+            </ul>
+          {/each}
+        {/if}
       </div>
     </ul>
   </div>
