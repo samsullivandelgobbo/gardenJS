@@ -3,7 +3,7 @@
   export let data;
 
   afterUpdate(async () => {
-    console.log("client", data);
+    console.log("nested client", data);
   });
 </script>
 
